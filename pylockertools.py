@@ -51,7 +51,7 @@ def cmd_exportusers(client: RelaxxClient, args: argparse.Namespace) -> int:
     rows = []
     users = list(client.iter_locker_users(search_text=args.search))
     for i, user in enumerate(users, 1):
-        if i % CHUNK_SIZE == 0 or i == len(users):
+        if i % PROGRESS_EVERY == 0 or i == len(users):
             print(f"  fetching user details: {i}/{len(users)}", file=sys.stderr)
         detail = client.get_locker_user(user.id)
         base = {
@@ -96,6 +96,7 @@ def cmd_exportusers(client: RelaxxClient, args: argparse.Namespace) -> int:
 
 CHUNK_SIZE = 500
 CARD_CHUNK_SIZE = 50  # carrier endpoint is much slower server-side
+PROGRESS_EVERY = 50  # rows between progress messages
 
 USER_CSV_FIELDS = (
     "firstName",
@@ -135,6 +136,7 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
         return 1
 
     existing = list(client.iter_locker_users())
+    print(f"Loaded {len(existing)} existing user(s) from the API")
     by_member = {u.member_number: u for u in existing if u.member_number}
     by_email = {u.email.lower(): u for u in existing if u.email}
     by_name = {
@@ -198,9 +200,14 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
     # Data carriers: match by cardUID per user so re-imports update.
     carrier_payloads = []
     detail_cache = {}
+    total_card_rows = sum(1 for r in rows if r.get("cardUID"))
+    card_rows = 0
     for row, payload, user_id in zip(rows, user_payloads, row_user_ids, strict=True):
         if not row.get("cardUID"):
             continue
+        card_rows += 1
+        if card_rows % PROGRESS_EVERY == 0 or card_rows == total_card_rows:
+            print(f"  preparing cards: {card_rows}/{total_card_rows}", file=sys.stderr)
         if not row.get("dataCarrierTypeId"):
             print(
                 f"  SKIP card {row['cardUID']}: missing dataCarrierTypeId",
