@@ -95,7 +95,7 @@ def build_parser() -> argparse.ArgumentParser:
         prog="pylockertools",
         description="Tools for the Relaxx System API",
     )
-    subparsers = parser.add_subparsers(dest="command", required=True)
+    subparsers = parser.add_subparsers(dest="command")
 
     export = subparsers.add_parser(
         "exportusers", help="Export locker users to a CSV file"
@@ -115,7 +115,12 @@ def build_parser() -> argparse.ArgumentParser:
 
 
 def main() -> int:
-    args = build_parser().parse_args()
+    parser = build_parser()
+    args = parser.parse_args()
+    if not getattr(args, "func", None):
+        # No command given: show help instead of an error.
+        parser.print_help()
+        return 0
     try:
         with RelaxxClient.from_env() as client:
             return args.func(client, args)
