@@ -48,7 +48,9 @@ def cmd_exportusers(client: RelaxxClient, args: argparse.Namespace) -> int:
     """
     rows = []
     users = list(client.iter_locker_users(search_text=args.search))
-    for user in users:
+    for i, user in enumerate(users, 1):
+        if i % CHUNK_SIZE == 0 or i == len(users):
+            print(f"  fetching user details: {i}/{len(users)}", file=sys.stderr)
         detail = client.get_locker_user(user.id)
         base = {
             "firstName": detail.first_name or "",
@@ -89,6 +91,8 @@ def cmd_exportusers(client: RelaxxClient, args: argparse.Namespace) -> int:
     print(f"Exported {len(users)} user(s), {len(rows)} row(s) to {output.resolve()}")
     return 0
 
+
+CHUNK_SIZE = 500
 
 USER_CSV_FIELDS = (
     "firstName",
@@ -160,7 +164,15 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
             print(f"  {action}: {row.get('firstName')} {row.get('lastName')}{card}")
         return 0
 
-    results = client.bulk_upsert_locker_users(user_payloads)
+    # Chunk bulk calls: avoids timeouts on large imports, isolates
+    # failures and gives progress feedback.
+    results = []
+    for i in range(0, len(user_payloads), CHUNK_SIZE):
+        chunk = user_payloads[i : i + CHUNK_SIZE]
+        chunk_results = client.bulk_upsert_locker_users(chunk)
+        results.extend(chunk_results)
+        ok = sum(r.success for r in chunk_results)
+        print(f"  users {i + 1}-{i + len(chunk)}: {ok}/{len(chunk)} ok")
     # The bulk-upsert response is positional: resolve the user id per row,
     # falling back to the id of a matched existing user.
     row_user_ids: list[str | None] = []
@@ -183,7 +195,7 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
     # Data carriers: match by cardUID per user so re-imports update.
     carrier_payloads = []
     detail_cache = {}
-    for row, user_id in zip(rows, row_user_ids, strict=True):
+    for row, payload, user_id in zip(rows, user_payloads, row_user_ids, strict=True):
         if not row.get("cardUID"):
             continue
         if not row.get("dataCarrierTypeId"):
@@ -199,7 +211,9 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
                 file=sys.stderr,
             )
             continue
-        if user_id not in detail_cache:
+        # Users created by this import cannot have carriers yet: no need
+        # to fetch their details to match by cardUID.
+        if "id" in payload and user_id not in detail_cache:
             detail_cache[user_id] = {
                 dc.card_uid: dc
                 for dc in client.get_locker_user(user_id).data_carriers
@@ -217,18 +231,18 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
             carrier["validFrom"] = row["validFrom"]
         if row.get("validUntil"):
             carrier["validUntil"] = row["validUntil"]
-        if existing_card := detail_cache[user_id].get(row["cardUID"]):
+        if existing_card := detail_cache.get(user_id, {}).get(row["cardUID"]):
             carrier["id"] = str(existing_card.id)
         carrier_payloads.append(carrier)
 
-    if carrier_payloads:
-        results = client.bulk_upsert_data_carriers(carrier_payloads)
-        for carrier, result in zip(carrier_payloads, results, strict=True):
+    for i in range(0, len(carrier_payloads), CHUNK_SIZE):
+        chunk = carrier_payloads[i : i + CHUNK_SIZE]
+        results = client.bulk_upsert_data_carriers(chunk)
+        for carrier, result in zip(chunk, results, strict=True):
             if not result.success:
                 failures += 1
                 print(
-                    f"  FAILED card {carrier['cardUID']}: "
-                    f"{_err_msg(result.error)}",
+                    f"  FAILED card {carrier['cardUID']}: {_err_msg(result.error)}",
                     file=sys.stderr,
                 )
 
