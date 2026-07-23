@@ -221,9 +221,29 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         prog="pylockertools",
-        description="Tools for the Relaxx System API",
+        description="Tools for the Relaxx System API (locker management).",
+        epilog="""\
+examples:
+  %(prog)s exportusers                          Export all users to locker_users.csv
+  %(prog)s exportusers -o users.csv -s "tran"   Export filtered users to a file
+  %(prog)s importusers users.csv --dry-run      Preview an import (no changes)
+  %(prog)s importusers users.csv                Import users and cards from CSV
+
+typical workflow:
+  1. exportusers                 -> get a CSV of current users
+  2. edit the CSV                -> add/change rows
+  3. importusers ... --dry-run   -> check what would be created vs updated
+  4. importusers ...             -> apply
+
+configuration:
+  API connection is read from .env or environment variables:
+  RELAXX_BASE_URL, RELAXX_API_KEY, RELAXX_TIMEOUT (see .env.example)
+
+Run '%(prog)s <command> -h' for command-specific options.
+""",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
     )
-    subparsers = parser.add_subparsers(dest="command")
+    subparsers = parser.add_subparsers(dest="command", title="commands")
 
     export = subparsers.add_parser(
         "exportusers", help="Export locker users to a CSV file"
