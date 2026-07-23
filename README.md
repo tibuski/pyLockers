@@ -16,7 +16,7 @@ Configuration is read from environment variables (prefix `RELAXX_`) or `.env`:
 | ----------------- | ----------------------- | ------------------- |
 | `RELAXX_BASE_URL` | `http://localhost:5000` | API base URL        |
 | `RELAXX_API_KEY`  | *(required)*            | `X-API-KEY` header  |
-| `RELAXX_TIMEOUT`  | `10.0`                  | HTTP timeout (secs) |
+| `RELAXX_TIMEOUT`  | `60.0`                  | HTTP timeout (secs) |
 
 ### Running from WSL2
 
@@ -111,7 +111,7 @@ with RelaxxClient.from_env() as client:
     # client.execute_locker_action(locker.id, LockerAction.OPEN_LOCKER)
 ```
 
-Available client methods: `get_lockers`, `get_locker`,
+Available client methods: `get_lockers`, `iter_lockers`, `get_locker`,
 `execute_locker_action`, `get_locker_users`, `get_locker_user`,
 `iter_locker_users`, `bulk_upsert_locker_users`,
 `bulk_upsert_data_carriers`.
