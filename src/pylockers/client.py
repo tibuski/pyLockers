@@ -9,6 +9,7 @@ Usage:
 
 from __future__ import annotations
 
+from collections.abc import Iterator
 from typing import Any, Self
 from uuid import UUID
 
@@ -128,3 +129,17 @@ class RelaxxClient:
         """Get a single locker user by Id."""
         response = self._request("GET", f"/locker-users/{locker_user_id}")
         return LockerUser.model_validate(response.json())
+
+    def iter_locker_users(
+        self, *, search_text: str | None = None, page_size: int = 100
+    ) -> Iterator[LockerUser]:
+        """Yield all locker users, transparently following pagination."""
+        page_number = 1
+        while True:
+            page = self.get_locker_users(
+                search_text=search_text, page_number=page_number, page_size=page_size
+            )
+            yield from page.results
+            if page_number * page_size >= page.total_records or not page.results:
+                return
+            page_number += 1

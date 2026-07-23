@@ -91,6 +91,7 @@ class LockerUser(ApiModel):
         default=None, validation_alias=AliasChoices("memberNumber", "member_number")
     )
     department: str | None = None
+    remark: str | None = None
     is_active: bool = Field(
         default=True, validation_alias=AliasChoices("isActive", "is_active")
     )
