@@ -60,9 +60,38 @@ class ApiModel(BaseModel):
     model_config = ConfigDict(populate_by_name=True, extra="ignore")
 
 
+class DeviceAssignment(ApiModel):
+    id: UUID | None = None
+    name: str | None = None
+
+
+class LockerGroupAssignment(ApiModel):
+    id: UUID | None = None
+    name: str | None = None
+
+
+class BleLockerMetaData(ApiModel):
+    device_code: str | None = Field(
+        default=None, validation_alias=AliasChoices("deviceCode", "device_code")
+    )
+    rssi: int | None = None
+    ap: str | None = None
+    fid: str | None = None
+    last_action_on: datetime | None = Field(
+        default=None, validation_alias=AliasChoices("lastActionOn", "last_action_on")
+    )
+
+
+class LockerMetaData(ApiModel):
+    ble: BleLockerMetaData | None = None
+
+
 class Locker(ApiModel):
     id: UUID
     number: str | None = None
+    hardware_number: int | None = Field(
+        default=None, validation_alias=AliasChoices("hardwareNumber", "hardware_number")
+    )
     locker_type: LockerType | None = Field(
         default=None, validation_alias=AliasChoices("lockerType", "locker_type")
     )
@@ -77,7 +106,32 @@ class Locker(ApiModel):
     enabled: bool = True
     rented: bool = False
     blocked: bool = False
+    # the API spells it "inMantainance"
+    in_mantainance: bool = Field(
+        default=False,
+        validation_alias=AliasChoices(
+            "inMantainance", "inMaintenance", "in_mantainance"
+        ),
+    )
     alarmed: bool = False
+    device: DeviceAssignment | None = None
+    locker_group: LockerGroupAssignment | None = Field(
+        default=None, validation_alias=AliasChoices("lockerGroup", "locker_group")
+    )
+    locker_location: str | None = Field(
+        default=None, validation_alias=AliasChoices("lockerLocation", "locker_location")
+    )
+    meta_data: LockerMetaData | None = Field(
+        default=None, validation_alias=AliasChoices("metaData", "meta_data")
+    )
+    active_alarms: list[str] = Field(
+        default_factory=list,
+        validation_alias=AliasChoices("activeAlarms", "active_alarms"),
+    )
+    active_warnings: list[str] = Field(
+        default_factory=list,
+        validation_alias=AliasChoices("activeWarnings", "active_warnings"),
+    )
 
 
 class LockerUser(ApiModel):

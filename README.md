@@ -32,10 +32,11 @@ Gantner setup the System API listens on port **8243** (8241 is the web UI).
 uv run python pylockertools.py --help
 ```
 
-| Command       | Description                                            |
-| ------------- | ------------------------------------------------------ |
-| `exportusers` | Export locker users to a CSV file (import format)      |
-| `importusers` | Import locker users (and cards) from a CSV file        |
+| Command         | Description                                       |
+| --------------- | ------------------------------------------------- |
+| `exportusers`   | Export locker users to a CSV file (import format) |
+| `importusers`   | Import locker users (and cards) from a CSV file   |
+| `exportlockers` | Export all lockers to a CSV file                  |
 
 ### exportusers
 
@@ -65,6 +66,23 @@ per-item API rejections are reported with the affected item and the API's
 message, e.g. `FAILED card 2198065733: Data carrier is not unique.`
 Note the bulk API returns HTTP 200 even for rejected items, so always
 check the output. The exit code is `1` if any row failed.
+
+### exportlockers
+
+```bash
+uv run python pylockertools.py exportlockers                # → lockers.csv
+uv run python pylockertools.py exportlockers -o out.csv     # custom output file
+uv run python pylockertools.py exportlockers -s "yellow"    # search filter
+```
+
+Exports every locker field the System API exposes: id, number, hardware
+number, type, mode, door/connection state, flags (enabled, rented, blocked,
+maintenance, alarmed), device and locker group, location, BLE metadata and
+active alarms/warnings (joined with `;`).
+
+Note: the System API is read-only for lockers apart from mode/actions, and
+the display name shown in the Relaxx Web UI is stored in the web backend
+(port 8241), not in the System API — so it is not part of this export.
 
 ### Large imports/exports
 

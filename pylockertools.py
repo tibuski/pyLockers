@@ -34,6 +34,85 @@ EXPORT_FIELDS = [
 ]
 
 
+# All fields the System API exposes for lockers (flat CSV, one row per locker).
+LOCKER_FIELDS = [
+    "id",
+    "number",
+    "hardwareNumber",
+    "lockerType",
+    "mode",
+    "doorState",
+    "connectionState",
+    "enabled",
+    "rented",
+    "blocked",
+    "inMantainance",
+    "alarmed",
+    "deviceId",
+    "deviceName",
+    "lockerGroupId",
+    "lockerGroupName",
+    "lockerLocation",
+    "bleDeviceCode",
+    "bleRssi",
+    "bleAp",
+    "bleFid",
+    "bleLastActionOn",
+    "activeAlarms",
+    "activeWarnings",
+]
+
+
+def cmd_exportlockers(client: RelaxxClient, args: argparse.Namespace) -> int:
+    """Export all lockers to a CSV file (System API view)."""
+    rows = []
+    for i, locker in enumerate(client.iter_lockers(search_text=args.search), 1):
+        if i % PROGRESS_EVERY == 0:
+            print(f"  fetching lockers: {i}", file=sys.stderr)
+        ble = locker.meta_data.ble if locker.meta_data else None
+        rows.append(
+            {
+                "id": str(locker.id),
+                "number": locker.number or "",
+                "hardwareNumber": locker.hardware_number or "",
+                "lockerType": locker.locker_type or "",
+                "mode": locker.mode or "",
+                "doorState": locker.door_state or "",
+                "connectionState": locker.connection_state or "",
+                "enabled": _bool(locker.enabled),
+                "rented": _bool(locker.rented),
+                "blocked": _bool(locker.blocked),
+                "inMantainance": _bool(locker.in_mantainance),
+                "alarmed": _bool(locker.alarmed),
+                "deviceId": str(locker.device.id) if locker.device else "",
+                "deviceName": locker.device.name or "" if locker.device else "",
+                "lockerGroupId": str(locker.locker_group.id)
+                if locker.locker_group
+                else "",
+                "lockerGroupName": locker.locker_group.name or ""
+                if locker.locker_group
+                else "",
+                "lockerLocation": locker.locker_location or "",
+                "bleDeviceCode": ble.device_code or "" if ble else "",
+                "bleRssi": ble.rssi if ble and ble.rssi is not None else "",
+                "bleAp": ble.ap or "" if ble else "",
+                "bleFid": ble.fid or "" if ble else "",
+                "bleLastActionOn": _dt(ble.last_action_on) if ble else "",
+                "activeAlarms": ";".join(locker.active_alarms),
+                "activeWarnings": ";".join(locker.active_warnings),
+            }
+        )
+
+    output = Path(args.output)
+    with output.open("w", newline="", encoding="utf-8") as f:
+        writer = csv.DictWriter(f, fieldnames=LOCKER_FIELDS)
+        writer.writeheader()
+        writer.writerows(rows)
+
+    print(f"Exported {len(rows)} locker(s) to {output.resolve()}")
+    return 0
+
+
 def _bool(value: bool) -> str:
     return "true" if value else "false"
 
@@ -277,6 +356,8 @@ examples:
   %(prog)s exportusers -o users.csv -s "tran"   Export filtered users to a file
   %(prog)s importusers users.csv --dry-run      Preview an import (no changes)
   %(prog)s importusers users.csv                Import users and cards from CSV
+  %(prog)s exportlockers                        Export all lockers to lockers.csv
+  %(prog)s exportlockers -s "yellow"            Export lockers matching a search
 
 typical workflow:
   1. exportusers                 -> get a CSV of current users
@@ -318,6 +399,20 @@ Run '%(prog)s <command> -h' for command-specific options.
         help="Show what would be created/updated without writing",
     )
     imp.set_defaults(func=cmd_importusers)
+
+    expl = subparsers.add_parser(
+        "exportlockers", help="Export all lockers to a CSV file"
+    )
+    expl.add_argument(
+        "-o",
+        "--output",
+        default="lockers.csv",
+        help="Output CSV file (default: lockers.csv)",
+    )
+    expl.add_argument(
+        "-s", "--search", default=None, help="Optional search text filter"
+    )
+    expl.set_defaults(func=cmd_exportlockers)
 
     return parser
 

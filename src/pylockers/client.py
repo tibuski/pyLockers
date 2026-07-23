@@ -116,6 +116,20 @@ class RelaxxClient:
         response = self._request("GET", "/lockers", params=params)
         return PagedResult[Locker].model_validate(response.json())
 
+    def iter_lockers(
+        self, *, search_text: str | None = None, page_size: int = 100
+    ) -> Iterator[Locker]:
+        """Yield all lockers, transparently following pagination."""
+        page_number = 1
+        while True:
+            page = self.get_lockers(
+                search_text=search_text, page_number=page_number, page_size=page_size
+            )
+            yield from page.results
+            if page_number * page_size >= page.total_records or not page.results:
+                return
+            page_number += 1
+
     def get_locker(self, locker_id: UUID) -> Locker:
         """Get a single locker by its Id."""
         response = self._request("GET", f"/lockers/{locker_id}")
