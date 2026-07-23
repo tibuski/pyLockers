@@ -35,6 +35,10 @@ class RelaxxApiError(Exception):
         super().__init__(f"API error {status_code}: {detail}")
 
 
+# Bulk endpoints process items sequentially server-side and can be slow.
+BULK_TIMEOUT = 120.0
+
+
 class RelaxxClient:
     """Synchronous client for the Relaxx System API.
 
@@ -75,7 +79,16 @@ class RelaxxClient:
 
     # -- low-level ------------------------------------------------------
 
-    def _request(self, method: str, path: str, **kwargs: Any) -> httpx.Response:
+    def _request(
+        self,
+        method: str,
+        path: str,
+        *,
+        timeout: float | None = None,
+        **kwargs: Any,
+    ) -> httpx.Response:
+        if timeout is not None:
+            kwargs["timeout"] = timeout
         response = self._http.request(method, path, **kwargs)
         if response.is_error:
             raise RelaxxApiError(response.status_code, response.text)
@@ -145,14 +158,18 @@ class RelaxxClient:
         Items with an ``id`` update the existing user; items without
         one are always created (the API does not de-duplicate).
         """
-        response = self._request("POST", "/locker-users/bulk-upsert", json=users)
+        response = self._request(
+            "POST", "/locker-users/bulk-upsert", json=users, timeout=BULK_TIMEOUT
+        )
         return [BulkUpsertResult.model_validate(item) for item in response.json()]
 
     def bulk_upsert_data_carriers(
         self, carriers: list[dict[str, Any]]
     ) -> list[BulkUpsertResult]:
         """Add or update data carriers in bulk (same id semantics as users)."""
-        response = self._request("POST", "/data-carriers/bulk-upsert", json=carriers)
+        response = self._request(
+            "POST", "/data-carriers/bulk-upsert", json=carriers, timeout=BULK_TIMEOUT
+        )
         return [BulkUpsertResult.model_validate(item) for item in response.json()]
 
     def iter_locker_users(

@@ -12,6 +12,8 @@ import csv
 import sys
 from pathlib import Path
 
+import httpx
+
 from pylockers import RelaxxApiError, RelaxxClient
 
 # Columns match the user import format, so exports can be re-imported.
@@ -93,6 +95,7 @@ def cmd_exportusers(client: RelaxxClient, args: argparse.Namespace) -> int:
 
 
 CHUNK_SIZE = 500
+CARD_CHUNK_SIZE = 50  # carrier endpoint is much slower server-side
 
 USER_CSV_FIELDS = (
     "firstName",
@@ -235,16 +238,20 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
             carrier["id"] = str(existing_card.id)
         carrier_payloads.append(carrier)
 
-    for i in range(0, len(carrier_payloads), CHUNK_SIZE):
-        chunk = carrier_payloads[i : i + CHUNK_SIZE]
+    for i in range(0, len(carrier_payloads), CARD_CHUNK_SIZE):
+        chunk = carrier_payloads[i : i + CARD_CHUNK_SIZE]
         results = client.bulk_upsert_data_carriers(chunk)
+        ok = 0
         for carrier, result in zip(chunk, results, strict=True):
-            if not result.success:
+            if result.success:
+                ok += 1
+            else:
                 failures += 1
                 print(
                     f"  FAILED card {carrier['cardUID']}: {_err_msg(result.error)}",
                     file=sys.stderr,
                 )
+        print(f"  cards {i + 1}-{i + len(chunk)}: {ok}/{len(chunk)} ok")
 
     print(
         f"Imported {len(user_payloads)} user(s), {len(carrier_payloads)} card(s), "
@@ -320,6 +327,9 @@ def main() -> int:
             return args.func(client, args)
     except RelaxxApiError as exc:
         print(f"API error: {exc}", file=sys.stderr)
+        return 1
+    except httpx.HTTPError as exc:
+        print(f"Network error: {exc}", file=sys.stderr)
         return 1
     except OSError as exc:
         print(f"Error: {exc}", file=sys.stderr)
