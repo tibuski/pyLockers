@@ -14,32 +14,79 @@ from pathlib import Path
 
 from pylockers import RelaxxApiError, RelaxxClient
 
-USER_FIELDS = [
-    ("id", "Id"),
-    ("first_name", "FirstName"),
-    ("last_name", "LastName"),
-    ("email", "Email"),
-    ("member_number", "MemberNumber"),
-    ("department", "Department"),
-    ("remark", "Remark"),
-    ("is_active", "IsActive"),
+# Columns match the user import format, so exports can be re-imported.
+EXPORT_FIELDS = [
+    "firstName",
+    "lastName",
+    "email",
+    "memberNumber",
+    "department",
+    "remark",
+    "isActive",
+    "authorizationGroupId",
+    "cardUID",
+    "friendlyName",
+    "dataCarrierTypeId",
+    "validFrom",
+    "validUntil",
 ]
 
 
+def _bool(value: bool) -> str:
+    return "true" if value else "false"
+
+
+def _dt(value: object) -> str:
+    return value.isoformat() if value is not None else ""
+
+
 def cmd_exportusers(client: RelaxxClient, args: argparse.Namespace) -> int:
-    """Export all locker users to a CSV file."""
+    """Export all locker users to a CSV file in the user import format.
+
+    Emits one row per data carrier; users without a data carrier get a
+    single row with empty card columns.
+    """
+    rows = []
     users = list(client.iter_locker_users(search_text=args.search))
+    for user in users:
+        detail = client.get_locker_user(user.id)
+        base = {
+            "firstName": detail.first_name or "",
+            "lastName": detail.last_name or "",
+            "email": detail.email or "",
+            "memberNumber": detail.member_number or "",
+            "department": detail.department or "",
+            "remark": detail.remark or "",
+            "isActive": _bool(detail.is_active),
+            "authorizationGroupId": (
+                str(detail.authorization_group.id)
+                if detail.authorization_group and detail.authorization_group.id
+                else ""
+            ),
+        }
+        carriers = detail.data_carriers or [None]
+        for carrier in carriers:
+            carrier_type = carrier.data_carrier_type if carrier else None
+            rows.append(
+                base
+                | {
+                    "cardUID": carrier.card_uid or "" if carrier else "",
+                    # friendlyName: the detail DTO has no per-carrier name,
+                    # so we export the data carrier type name.
+                    "friendlyName": carrier_type.name or "" if carrier_type else "",
+                    "dataCarrierTypeId": str(carrier_type.id) if carrier_type else "",
+                    "validFrom": _dt(carrier.valid_from) if carrier else "",
+                    "validUntil": _dt(carrier.valid_until) if carrier else "",
+                }
+            )
 
     output = Path(args.output)
     with output.open("w", newline="", encoding="utf-8") as f:
-        writer = csv.DictWriter(f, fieldnames=[header for _, header in USER_FIELDS])
+        writer = csv.DictWriter(f, fieldnames=EXPORT_FIELDS)
         writer.writeheader()
-        for user in users:
-            writer.writerow(
-                {header: getattr(user, attr) for attr, header in USER_FIELDS}
-            )
+        writer.writerows(rows)
 
-    print(f"Exported {len(users)} user(s) to {output.resolve()}")
+    print(f"Exported {len(users)} user(s), {len(rows)} row(s) to {output.resolve()}")
     return 0
 
 

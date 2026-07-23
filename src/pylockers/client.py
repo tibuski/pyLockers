@@ -16,7 +16,13 @@ from uuid import UUID
 import httpx
 
 from pylockers.config import Settings, get_settings
-from pylockers.models import Locker, LockerAction, LockerUser, PagedResult
+from pylockers.models import (
+    Locker,
+    LockerAction,
+    LockerUser,
+    LockerUserDetail,
+    PagedResult,
+)
 
 
 class RelaxxApiError(Exception):
@@ -125,10 +131,10 @@ class RelaxxClient:
         response = self._request("GET", "/locker-users", params=params)
         return PagedResult[LockerUser].model_validate(response.json())
 
-    def get_locker_user(self, locker_user_id: UUID) -> LockerUser:
-        """Get a single locker user by Id."""
+    def get_locker_user(self, locker_user_id: UUID) -> LockerUserDetail:
+        """Get full details of a locker user (groups, data carriers, lockers)."""
         response = self._request("GET", f"/locker-users/{locker_user_id}")
-        return LockerUser.model_validate(response.json())
+        return LockerUserDetail.model_validate(response.json())
 
     def iter_locker_users(
         self, *, search_text: str | None = None, page_size: int = 100

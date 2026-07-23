@@ -4,6 +4,7 @@ Field names follow the API's JSON payloads; aliases map them to
 snake_case Python attributes.
 """
 
+from datetime import datetime
 from enum import StrEnum
 from uuid import UUID
 
@@ -94,6 +95,48 @@ class LockerUser(ApiModel):
     remark: str | None = None
     is_active: bool = Field(
         default=True, validation_alias=AliasChoices("isActive", "is_active")
+    )
+
+
+class AuthorizationGroupReference(ApiModel):
+    id: UUID | None = None
+    name: str | None = None
+
+
+class DataCarrierTypeReference(ApiModel):
+    id: UUID
+    name: str | None = None
+
+
+class DataCarrier(ApiModel):
+    id: UUID
+    card_uid: str | None = Field(
+        default=None, validation_alias=AliasChoices("cardUID", "card_uid")
+    )
+    is_active: bool = Field(
+        default=True, validation_alias=AliasChoices("isActive", "is_active")
+    )
+    valid_from: datetime | None = Field(
+        default=None, validation_alias=AliasChoices("validFrom", "valid_from")
+    )
+    valid_until: datetime | None = Field(
+        default=None, validation_alias=AliasChoices("validUntil", "valid_until")
+    )
+    description: str | None = None
+    data_carrier_type: DataCarrierTypeReference | None = Field(
+        default=None,
+        validation_alias=AliasChoices("dataCarrierType", "data_carrier_type"),
+    )
+
+
+class LockerUserDetail(LockerUser):
+    authorization_group: AuthorizationGroupReference | None = Field(
+        default=None,
+        validation_alias=AliasChoices("authorizationGroup", "authorization_group"),
+    )
+    data_carriers: list[DataCarrier] = Field(
+        default_factory=list,
+        validation_alias=AliasChoices("dataCarriers", "data_carriers"),
     )
 
 
