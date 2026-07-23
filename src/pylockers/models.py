@@ -6,6 +6,7 @@ snake_case Python attributes.
 
 from datetime import datetime
 from enum import StrEnum
+from typing import Any
 from uuid import UUID
 
 from pydantic import AliasChoices, BaseModel, ConfigDict, Field
@@ -138,6 +139,14 @@ class LockerUserDetail(LockerUser):
         default_factory=list,
         validation_alias=AliasChoices("dataCarriers", "data_carriers"),
     )
+
+
+class BulkUpsertResult(ApiModel):
+    """Per-item result of a bulk-upsert call."""
+
+    data: dict[str, Any] | None = None
+    success: bool = False
+    error: dict[str, Any] | None = None
 
 
 class PagedResult[T](ApiModel):

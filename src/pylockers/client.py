@@ -17,6 +17,7 @@ import httpx
 
 from pylockers.config import Settings, get_settings
 from pylockers.models import (
+    BulkUpsertResult,
     Locker,
     LockerAction,
     LockerUser,
@@ -135,6 +136,24 @@ class RelaxxClient:
         """Get full details of a locker user (groups, data carriers, lockers)."""
         response = self._request("GET", f"/locker-users/{locker_user_id}")
         return LockerUserDetail.model_validate(response.json())
+
+    def bulk_upsert_locker_users(
+        self, users: list[dict[str, Any]]
+    ) -> list[BulkUpsertResult]:
+        """Add or update locker users in bulk.
+
+        Items with an ``id`` update the existing user; items without
+        one are always created (the API does not de-duplicate).
+        """
+        response = self._request("POST", "/locker-users/bulk-upsert", json=users)
+        return [BulkUpsertResult.model_validate(item) for item in response.json()]
+
+    def bulk_upsert_data_carriers(
+        self, carriers: list[dict[str, Any]]
+    ) -> list[BulkUpsertResult]:
+        """Add or update data carriers in bulk (same id semantics as users)."""
+        response = self._request("POST", "/data-carriers/bulk-upsert", json=carriers)
+        return [BulkUpsertResult.model_validate(item) for item in response.json()]
 
     def iter_locker_users(
         self, *, search_text: str | None = None, page_size: int = 100
