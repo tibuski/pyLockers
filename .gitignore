@@ -11,3 +11,6 @@ wheels/
 
 # Secrets
 .env
+
+# Exported user data
+*.csv

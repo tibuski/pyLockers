@@ -154,20 +154,24 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
         return 0
 
     results = client.bulk_upsert_locker_users(user_payloads)
-    id_by_member = {}
+    # The bulk-upsert response is positional: resolve the user id per row,
+    # falling back to the id of a matched existing user.
+    row_user_ids: list[str | None] = []
     failures = 0
-    for result in results:
-        if result.success and result.data:
-            if mn := result.data.get("memberNumber"):
-                id_by_member[mn] = result.data["id"]
+    for payload, result in zip(user_payloads, results, strict=True):
+        if result.success and result.data and result.data.get("id"):
+            row_user_ids.append(result.data["id"])
+        elif result.success and payload.get("id"):
+            row_user_ids.append(payload["id"])
         else:
+            row_user_ids.append(None)
             failures += 1
             print(f"  FAILED user: {result.error}", file=sys.stderr)
 
     # Data carriers: match by cardUID per user so re-imports update.
     carrier_payloads = []
     detail_cache = {}
-    for row, payload in zip(rows, user_payloads, strict=True):
+    for row, user_id in zip(rows, row_user_ids, strict=True):
         if not row.get("cardUID"):
             continue
         if not row.get("dataCarrierTypeId"):
@@ -176,10 +180,10 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
                 file=sys.stderr,
             )
             continue
-        user_id = id_by_member.get(row.get("memberNumber") or "") or payload.get("id")
         if not user_id:
+            name = f"{row.get('firstName')} {row.get('lastName')}"
             print(
-                f"  SKIP card {row['cardUID']}: user not imported",
+                f"  SKIP card {row['cardUID']}: user {name} not imported",
                 file=sys.stderr,
             )
             continue
