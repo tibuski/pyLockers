@@ -1,0 +1,3872 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Relaxx System API",
+    "version": "9.1.2"
+  },
+  "paths": {
+    "/authorization-groups": {
+      "get": {
+        "tags": [
+          "Authorization Groups"
+        ],
+        "summary": "Get all authorization groups",
+        "description": "Retrieve a list of all available authorization groups in the system.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AuthorizationGroupDtoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/data-carrier-types": {
+      "get": {
+        "tags": [
+          "Data Carrier Types"
+        ],
+        "summary": "Get all data carrier types",
+        "description": "Retrieve a list of all available data carrier types in the system.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataCarrierTypeDtoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Data Carrier Types"
+        ],
+        "summary": "Create data carrier type",
+        "description": "Add a new data carrier type to the system with specified details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataCarrierTypeCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataCarrierTypeCreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/data-carrier-types/{dataCarrierTypeId}": {
+      "put": {
+        "tags": [
+          "Data Carrier Types"
+        ],
+        "summary": "Update data carrier type",
+        "description": "Modify the details of existing data carrier type.",
+        "parameters": [
+          {
+            "name": "dataCarrierTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataCarrierTypeUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Data Carrier Types"
+        ],
+        "summary": "Delete data carrier type",
+        "description": "Remove an existing data carrier type from the system.",
+        "parameters": [
+          {
+            "name": "dataCarrierTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/data-carrier-types/{dataCarrierTypeId}/enable": {
+      "put": {
+        "tags": [
+          "Data Carrier Types"
+        ],
+        "summary": "Enable a disabled data carrier type",
+        "description": "Toggle the `enabled` property of data carrier type to `true`.",
+        "parameters": [
+          {
+            "name": "dataCarrierTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/data-carrier-types/{dataCarrierTypeId}/disable": {
+      "put": {
+        "tags": [
+          "Data Carrier Types"
+        ],
+        "summary": "Disable data carrier type",
+        "description": "Toggle the `enabled` property of data carrier type to `false`.",
+        "parameters": [
+          {
+            "name": "dataCarrierTypeId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/data-carriers/bulk-upsert": {
+      "post": {
+        "tags": [
+          "Data Carriers"
+        ],
+        "summary": "Bulk Add or update data carriers",
+        "description": "Bulk Add or update data carriers to locker users with specified details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/DataCarrierUpsertDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/DataCarrierUpsertDtoBulkResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/duration-templates": {
+      "get": {
+        "tags": [
+          "Duration Templates"
+        ],
+        "summary": "Get all duration templates",
+        "description": "Retrieve a list of all available duration templates in the system.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DurationTemplateDtoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Duration Templates"
+        ],
+        "summary": "Create duration template",
+        "description": "Add a new duration template to the system with specified details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DurationTemplateCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DurationTemplateCreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/duration-templates/{durationTemplateId}": {
+      "put": {
+        "tags": [
+          "Duration Templates"
+        ],
+        "summary": "Update duration template",
+        "description": "Modify the details of existing duration template.",
+        "parameters": [
+          {
+            "name": "durationTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DurationTemplateUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Duration Templates"
+        ],
+        "summary": "Delete duration template",
+        "description": "Remove an existing duration template from the system.",
+        "parameters": [
+          {
+            "name": "durationTemplateId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-areas": {
+      "get": {
+        "tags": [
+          "Locker Areas"
+        ],
+        "summary": "Get locker areas tree with child areas and locker groups",
+        "description": "Retrieve the complete locker area hierarchy (parent/child areas) including associated locker groups.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockerAreaDtoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users": {
+      "get": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Get a list of locker users",
+        "description": "Retrieve a list of locker users that are currently registered within the system.",
+        "parameters": [
+          {
+            "name": "CardUID",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Name",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Email",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "MemberNumber",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Department",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IsActive",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "AuthorizationGroupId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "IsSelfLearningLockerUser",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "SearchText",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "SortField",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/LockerUserSortFields"
+            }
+          },
+          {
+            "name": "SortByDesc",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockerUserDtoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Create a new locker user",
+        "description": "Add a new locker user to the system with specified details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockerUserCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockerUserCreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/bulk-upsert": {
+      "post": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Bulk add or update locker users",
+        "description": "Bulk add or update the locker users with specified details.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/LockerUserUpsertDto"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/LockerUserUpsertedDtoBulkResult"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/{lockerUserId}": {
+      "put": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": " Update an existing locker user",
+        "description": "Modify the details of existing locker user to reflect new information or changes.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockerUserUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Get a locker user by Id",
+        "description": "Retrive the locker user's details based on their unique Id.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockerUserDetailDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "patch": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Partial update of existing locker user",
+        "description": "Modify specific field(s) of existing locker user",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/PatchRequestDTO"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Delete an existing user",
+        "description": "Remove an existing locker user from the system.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/{lockerUserId}/data-carriers": {
+      "post": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Add a new data carrier to a locker user",
+        "description": "Add a new data carrier to the locker user with specified details.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataCarrierCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DataCarrierCreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/{lockerUserId}/data-carriers/{dataCarrierId}": {
+      "put": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Update an existing data carrier of a locker user",
+        "description": "Adjust the data carrier information for the locker user to include recent updates.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "dataCarrierId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DataCarrierUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Delete a data carrier of a locker user",
+        "description": "Remove a data carrier from the specified locker user.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "dataCarrierId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/{lockerUserId}/lockers": {
+      "post": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Assign personal locker to locker user",
+        "description": "Assign a new Personal/Dynamic Locker (if Locker is NET/Smart) or Personal Locker Programming Card (if Locker is BLE) to locker user with specified details.\r\n        <b> Personal/Dynamic Locker (NET & Smart): Assignment for this locker handled synchrnously.\r\n        <b> Personal Locker Programming Card (BLE): Assigment for this locker handled asynchronously.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddLockerDTO"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted - The requesst was accepted for processing, but not yet completed. Locker assignment accepted for asynchronous processing because Locker is BLE."
+          },
+          "204": {
+            "description": "No Content - The request was processed successfully. Locker assignment completed synchrnously because the Locker is NET/Smart."
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/{lockerUserId}/lockers/{lockerId}": {
+      "delete": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Delete locker assignment from the locker user",
+        "description": "Remove locker assignment from the system.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "lockerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Accepted - The requesst was accepted for processing, but not yet completed. Delete locker assignment accepted for asynchronous processing because Locker is BLE."
+          },
+          "204": {
+            "description": "No Content - The request was processed successfully. Locker assignment delete completed synchrnously because the Locker is NET/Smart."
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/{lockerUserId}/authorization-group": {
+      "put": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Assign or update locker user`s authorization group",
+        "description": "Assigns or updates the authorization group for specified locker user.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AuthorizationGroupAssignDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Delete locker user`s authorization group",
+        "description": "Removes the authorization group assignment from the specified locker user.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/locker-users/{lockerUserId}/block": {
+      "post": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Block locker user",
+        "description": "Blocks (Update `isActive` to `false`) the specified locker user to prevent locker access until it is unblocked.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Locker Users"
+        ],
+        "summary": "Unblock locker user",
+        "description": "Removes the block status (Update `isActive`to `true`) from the specified locker user and restore locker access.",
+        "parameters": [
+          {
+            "name": "lockerUserId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/lockers": {
+      "get": {
+        "tags": [
+          "Lockers"
+        ],
+        "summary": "Get a list of lockers",
+        "description": "Retrieve a list of all physical lockers that are currently defined within the system.",
+        "parameters": [
+          {
+            "name": "SearchText",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Number",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "LockerId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "InMaintenance",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Rented",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Blocked",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Enabled",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "Alarmed",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "DoorStates",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/DoorState"
+              }
+            }
+          },
+          {
+            "name": "LockerModes",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/LockerModes"
+              }
+            }
+          },
+          {
+            "name": "LockerGroupId",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "PageNumber",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "PageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "SortField",
+            "in": "query",
+            "schema": {
+              "$ref": "#/components/schemas/LockerSortFields"
+            }
+          },
+          {
+            "name": "SortByDesc",
+            "in": "query",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "LockerTypes",
+            "in": "query",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/LockerType"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockerDtoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/lockers/{lockerId}": {
+      "get": {
+        "tags": [
+          "Lockers"
+        ],
+        "summary": "Get a locker by Id",
+        "description": "Retrieve the locker details using its unique identifier (ID).",
+        "parameters": [
+          {
+            "name": "lockerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LockerDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/lockers/{lockerId}/mode": {
+      "put": {
+        "tags": [
+          "Lockers"
+        ],
+        "summary": "Update the locker mode of given locker Id",
+        "description": "Modify the locker mode settings for the given locker Id according to the new requirements.",
+        "parameters": [
+          {
+            "name": "lockerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockerModeUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted - The requesst was accepted for processing, but not yet completed. Locker mode update accepted for asynchronous processing because Locker is Ble."
+          },
+          "204": {
+            "description": "No Content - The request was processed successfully. Locker mode updated synchrnously because the Locker is Net/Smart."
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/lockers/mode/bulk": {
+      "put": {
+        "tags": [
+          "Lockers"
+        ],
+        "summary": "Bulk locker model update for given lockers",
+        "description": "Modify the locker mode settings for the given lockers according to the new requirements. (Only Net & Smart locker is supported)",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockerModelBulkUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/lockers/{lockerId}/action": {
+      "post": {
+        "tags": [
+          "Lockers"
+        ],
+        "summary": "Execute a locker action on given locker Id",
+        "description": " Performs a lock action, including operations like opening or maintenance settings, on the given locker Id.",
+        "parameters": [
+          {
+            "name": "lockerId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockerActionExecuteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Accepted - The requesst was accepted for processing, but not yet completed. Locker action accepted for asynchronous processing because Locker is BLE."
+          },
+          "204": {
+            "description": "No Content - The request was processed successfully. Locker action executed synchrnously because the Locker is NET/Smart."
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/lockers/action/bulk": {
+      "post": {
+        "tags": [
+          "Lockers"
+        ],
+        "summary": "Bulk execute a locker action on given lockers",
+        "description": "Perform a lock action, including operations like opening or maintenance settings, on the given lockers.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LockerActionBulkExecuteDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/webhooks": {
+      "post": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Create a new webook",
+        "description": "Add a new webhook for event notifications.",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookCreateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookCreatedDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Get all webhooks",
+        "description": "Retrieve a list of webhooks that are currently created within the system.",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookDtoPagedResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    },
+    "/webhooks/{webhookId}": {
+      "get": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Get a webhook by Id",
+        "description": "Get a webhook details for given webhook Id.",
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/WebhookDto"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "put": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Update an existing webhook",
+        "description": "Update an existng webhook details.",
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/WebhookUpdateDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      },
+      "delete": {
+        "tags": [
+          "Webhooks"
+        ],
+        "summary": "Delete an existing webhook",
+        "description": "Remove an existing webhook from the system.",
+        "parameters": [
+          {
+            "name": "webhookId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "No Content"
+          },
+          "400": {
+            "description": "Bad Request - Invalid request (e.g. missing required fields or malformed syntax)."
+          },
+          "401": {
+            "description": "Unauthorized - Authentication required or credentials invalid."
+          },
+          "403": {
+            "description": "Forbidden - User does not have necessary permissions."
+          },
+          "422": {
+            "description": "Unprocessable Entity - Valid request but business rule violation."
+          },
+          "500": {
+            "description": "Internal Server Error - An unexpected error occurred while processing the request."
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AddLockerDTO": {
+        "type": "object",
+        "properties": {
+          "lockerId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Alarms": {
+        "enum": [
+          "Blocked",
+          "BatteryLow",
+          "BreakInAlarm",
+          "TimeInvalid",
+          "Lost"
+        ],
+        "type": "string"
+      },
+      "AuthorizationGroupAssignDto": {
+        "type": "object",
+        "properties": {
+          "authorizationGroupId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxAllowedFreeLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedFreeLockersPerGroup": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedDynamicLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedDynamicLockersPerLockerGroup": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthorizationGroupAssignmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthorizationGroupDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "maxAllowedDynamicLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedFreeLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "groupType": {
+            "$ref": "#/components/schemas/AuthorizationGroupType"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "time"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "time"
+          },
+          "lockerGroupAuthorizations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerGroupAuthorizationDto"
+            },
+            "nullable": true
+          },
+          "lockerAreaAuthorizations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerAreaAuthorizationsDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthorizationGroupDtoPagedResult": {
+        "required": [
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/AuthorizationGroupDto"
+            },
+            "nullable": true
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AuthorizationGroupType": {
+        "enum": [
+          "Standard",
+          "System",
+          "Maintenaance"
+        ],
+        "type": "string"
+      },
+      "BLEDeviceCode": {
+        "enum": [
+          "GatEcoSidelock7000FISO",
+          "GatEcoSidelock7000BA",
+          "GatEcoLock7000FISO",
+          "GatEcoSideLock7010FISO",
+          "GatEcoDoorlock7000FISO",
+          "GatEcoDoorlock7000BA",
+          "GatEcoLock7000BA",
+          "GatEcoLock7001FISO",
+          "GatEcoLock7002FISO",
+          "not_defined",
+          "GAT_ECO_Lock_71xx",
+          "Post_Flexibox",
+          "Post_Flexibox_Gateway",
+          "GAT_ECO_Side_Lock",
+          "GAT_BLE_Access_Point_light",
+          "GAT_BLE_Access_Point",
+          "GT7",
+          "GL7p",
+          "Furniture_lock"
+        ],
+        "type": "string"
+      },
+      "BleLockerMetaData": {
+        "type": "object",
+        "properties": {
+          "deviceCode": {
+            "$ref": "#/components/schemas/BLEDeviceCode"
+          },
+          "rssi": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "ap": {
+            "type": "string",
+            "nullable": true
+          },
+          "fid": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastActionOn": {
+            "type": "string",
+            "format": "date-time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConnectionState": {
+        "enum": [
+          "Online",
+          "Offline",
+          "NotFound"
+        ],
+        "type": "string"
+      },
+      "DataCarrierAssignmentDto": {
+        "required": [
+          "cardUID",
+          "dataCarrierType"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cardUID": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "dataCarrierType": {
+            "$ref": "#/components/schemas/DataCarrierTypeReferenceDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierCreateDto": {
+        "required": [
+          "cardUID"
+        ],
+        "type": "object",
+        "properties": {
+          "dataCarrierTypeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cardUID": {
+            "type": "string",
+            "nullable": true
+          },
+          "friendlyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierCreatedDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierTypeCreateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "uidFormat": {
+            "$ref": "#/components/schemas/UIDFormat"
+          },
+          "hardwareCommunicationFormat": {
+            "$ref": "#/components/schemas/HardwareCommunicationFormat"
+          },
+          "durationTemplateId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierTypeCreatedDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierTypeDto": {
+        "required": [
+          "name",
+          "uidFormat"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "uidFormat": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "hardwareCommunicationFormat": {
+            "$ref": "#/components/schemas/HardwareCommunicationFormat"
+          },
+          "durationTemplate": {
+            "$ref": "#/components/schemas/DurationTemplateDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierTypeDtoPagedResult": {
+        "required": [
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataCarrierTypeDto"
+            },
+            "nullable": true
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierTypeReferenceDto": {
+        "required": [
+          "name",
+          "uidFormat"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "uidFormat": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierTypeUpdateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "durationTemplateId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierUpdateDto": {
+        "required": [
+          "cardUID"
+        ],
+        "type": "object",
+        "properties": {
+          "cardUID": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "friendlyName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierUpsertDto": {
+        "required": [
+          "cardUID",
+          "lockerUserId"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "dataCarrierTypeId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "lockerUserId": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "cardUID": {
+            "type": "string",
+            "nullable": true
+          },
+          "friendlyName": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataCarrierUpsertDtoBulkResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/DataCarrierUpsertDto"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "error": {
+            "$ref": "#/components/schemas/Error"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DeviceAssignmentDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DoorState": {
+        "enum": [
+          "Unknown",
+          "Open",
+          "Closed",
+          "Locked"
+        ],
+        "type": "string"
+      },
+      "DurationTemplateCreateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/DurationTemplateType"
+          },
+          "fixedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validFromMode": {
+            "$ref": "#/components/schemas/ValidFromMode"
+          },
+          "timespanDuration": {
+            "$ref": "#/components/schemas/TimeSpanDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DurationTemplateCreatedDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DurationTemplateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/DurationTemplateType"
+          },
+          "fixedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validFromMode": {
+            "$ref": "#/components/schemas/ValidFromMode"
+          },
+          "timespanDuration": {
+            "$ref": "#/components/schemas/TimeSpanDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DurationTemplateDtoPagedResult": {
+        "required": [
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DurationTemplateDto"
+            },
+            "nullable": true
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DurationTemplateType": {
+        "enum": [
+          "FixedDate",
+          "Timespan",
+          "DateRange"
+        ],
+        "type": "string"
+      },
+      "DurationTemplateUpdateDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/DurationTemplateType"
+          },
+          "fixedDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "startDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "endDate": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "validFromMode": {
+            "$ref": "#/components/schemas/ValidFromMode"
+          },
+          "timespanDuration": {
+            "$ref": "#/components/schemas/TimeSpanDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "message": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "HardwareCommunicationFormat": {
+        "enum": [
+          "GuidWithoutHyphens",
+          "Guid"
+        ],
+        "type": "string"
+      },
+      "LockerActionBulkExecuteDto": {
+        "required": [
+          "lockerIds"
+        ],
+        "type": "object",
+        "properties": {
+          "lockerIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "action": {
+            "$ref": "#/components/schemas/LockerActions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerActionExecuteDto": {
+        "type": "object",
+        "properties": {
+          "action": {
+            "$ref": "#/components/schemas/LockerActions"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerActions": {
+        "enum": [
+          "OpenLocker",
+          "CloseLocker",
+          "SetMaintenance",
+          "RevertMaintenance",
+          "EnableLocker",
+          "DisableLocker",
+          "QuitAlarm",
+          "QuitAlarmAndEnableLocker",
+          "SyncTime"
+        ],
+        "type": "string",
+        "description": "Represent the available locker actions.\r\n\r\n**NET & Smart Locker Actions**\r\n* OpenLocker\r\n* CloseLocker\r\n* SetMaintenance\r\n* RevertMaintenance\r\n* EnableLocker\r\n* DisableLocker\r\n* QuitAlarm\r\n* QuitAlarmAndEnableLocker\r\n\r\n**BLE Locker Actions**\r\n* OpenLocker\r\n* SyncTime"
+      },
+      "LockerAreaAuthorizationsDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "maxAllowedDynamicLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedFreeLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "time"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerAreaDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "lockerGroups": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerGroupDto"
+            },
+            "nullable": true
+          },
+          "childAreas": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerAreaDto"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerAreaDtoPagedResult": {
+        "required": [
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerAreaDto"
+            },
+            "nullable": true
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerAssignmentDto": {
+        "required": [
+          "lockerGroup",
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/LockerModes"
+          },
+          "lockerGroup": {
+            "$ref": "#/components/schemas/LockerGroupAssignmentDto"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerDto": {
+        "required": [
+          "device",
+          "lockerGroup",
+          "metaData",
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "hardwareNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lockerType": {
+            "$ref": "#/components/schemas/LockerType"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/LockerModes"
+          },
+          "doorState": {
+            "$ref": "#/components/schemas/DoorState"
+          },
+          "connectionState": {
+            "$ref": "#/components/schemas/ConnectionState"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "rented": {
+            "type": "boolean"
+          },
+          "blocked": {
+            "type": "boolean"
+          },
+          "inMantainance": {
+            "type": "boolean"
+          },
+          "alarmed": {
+            "type": "boolean"
+          },
+          "device": {
+            "$ref": "#/components/schemas/DeviceAssignmentDto"
+          },
+          "lockerGroup": {
+            "$ref": "#/components/schemas/LockerGroupAssignmentDto"
+          },
+          "lockerLocation": {
+            "type": "string",
+            "nullable": true
+          },
+          "lockerUsers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerUserAssigmentDto"
+            },
+            "nullable": true
+          },
+          "metaData": {
+            "$ref": "#/components/schemas/MetaData"
+          },
+          "activeAlarms": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Alarms"
+            },
+            "nullable": true
+          },
+          "activeWarnings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Alarms"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerDtoPagedResult": {
+        "required": [
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerDto"
+            },
+            "nullable": true
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerGroupAssignmentDto": {
+        "required": [
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerGroupAuthorizationDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "enabled": {
+            "type": "boolean"
+          },
+          "lockerGroupName": {
+            "type": "string",
+            "nullable": true
+          },
+          "maxAllowedDynamicLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedFreeLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "validFrom": {
+            "type": "string",
+            "format": "time"
+          },
+          "validUntil": {
+            "type": "string",
+            "format": "time"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerGroupDto": {
+        "required": [
+          "id",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/LockerTypeEnum"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerInUseDto": {
+        "required": [
+          "number"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "number": {
+            "type": "string",
+            "nullable": true
+          },
+          "doorState": {
+            "$ref": "#/components/schemas/DoorState"
+          },
+          "inMaintenance": {
+            "type": "boolean"
+          },
+          "rented": {
+            "type": "boolean"
+          },
+          "mode": {
+            "$ref": "#/components/schemas/LockerModes"
+          },
+          "lockerGroup": {
+            "$ref": "#/components/schemas/LockerGroupAssignmentDto"
+          },
+          "lockerLocation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerModeUpdateDto": {
+        "type": "object",
+        "properties": {
+          "mode": {
+            "$ref": "#/components/schemas/LockerModes"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerModelBulkUpdateDto": {
+        "required": [
+          "lockerIds"
+        ],
+        "type": "object",
+        "properties": {
+          "lockerIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "mode": {
+            "$ref": "#/components/schemas/LockerModes"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerModes": {
+        "enum": [
+          "PersonalLocker",
+          "DynamicLocker",
+          "FreeLocker",
+          "PersonalLockerProgrammingCard",
+          "PersonalLockerExpiryDate",
+          "FreeLockerUID"
+        ],
+        "type": "string",
+        "description": "Represent the mode of locker. \r\n   \r\n**NET & Smart Locker Modes**\r\n* PersonalLocker\r\n* DynamicLocker\r\n* FreeLocker\r\n\r\n**BLE Locker Modes**\r\n* FreeLocker\r\n* FreeLockerUID\r\n* PersonalLockerProgrammingCard\r\n* PersonalLockerExpiryDate"
+      },
+      "LockerSortFields": {
+        "enum": [
+          "Number",
+          "LockerState",
+          "LockerMode"
+        ],
+        "type": "string"
+      },
+      "LockerType": {
+        "enum": [
+          "Net",
+          "Smart",
+          "Ble",
+          "Virtual",
+          "Unknown"
+        ],
+        "type": "string"
+      },
+      "LockerTypeEnum": {
+        "enum": [
+          "Unknown",
+          "NetLock",
+          "BLELock"
+        ],
+        "type": "string"
+      },
+      "LockerUserAssigmentDto": {
+        "required": [
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserCreateDto": {
+        "required": [
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "authorizationGroupId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserCreatedDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserDetailDto": {
+        "required": [
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "isSelfLearningLockerUser": {
+            "type": "boolean"
+          },
+          "authorizationGroup": {
+            "$ref": "#/components/schemas/AuthorizationGroupAssignmentDto"
+          },
+          "dataCarriers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataCarrierAssignmentDto"
+            },
+            "nullable": true
+          },
+          "lockers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerAssignmentDto"
+            },
+            "nullable": true
+          },
+          "inUseLockers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerInUseDto"
+            },
+            "nullable": true
+          },
+          "maxAllowedFreeLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedFreeLockersPerGroup": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedDynamicLockers": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "maxAllowedDynamicLockersPerGroup": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserDto": {
+        "required": [
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "authorizationGroupId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "isSelfLearningLockerUser": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserDtoPagedResult": {
+        "required": [
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LockerUserDto"
+            },
+            "nullable": true
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserSortFields": {
+        "enum": [
+          "FirstName",
+          "LastName",
+          "Email",
+          "MemberNumber",
+          "Department"
+        ],
+        "type": "string"
+      },
+      "LockerUserUpdateDto": {
+        "required": [
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "authorizationGroupId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserUpsertDto": {
+        "required": [
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "authorizationGroupId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserUpsertedDto": {
+        "required": [
+          "firstName"
+        ],
+        "type": "object",
+        "properties": {
+          "firstName": {
+            "type": "string",
+            "nullable": true
+          },
+          "lastName": {
+            "type": "string",
+            "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
+          },
+          "memberNumber": {
+            "type": "string",
+            "nullable": true
+          },
+          "department": {
+            "type": "string",
+            "nullable": true
+          },
+          "remark": {
+            "type": "string",
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "authorizationGroupId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LockerUserUpsertedDtoBulkResult": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "$ref": "#/components/schemas/LockerUserUpsertedDto"
+          },
+          "success": {
+            "type": "boolean"
+          },
+          "error": {
+            "$ref": "#/components/schemas/Error"
+          }
+        },
+        "additionalProperties": false
+      },
+      "MetaData": {
+        "type": "object",
+        "properties": {
+          "ble": {
+            "$ref": "#/components/schemas/BleLockerMetaData"
+          }
+        },
+        "additionalProperties": false
+      },
+      "PatchRequestDTO": {
+        "type": "object",
+        "properties": {
+          "path": {
+            "type": "string",
+            "nullable": true
+          },
+          "value": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TimeSpanDto": {
+        "type": "object",
+        "properties": {
+          "year": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "day": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "hour": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "minute": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "UIDFormat": {
+        "enum": [
+          "Decimal",
+          "TextGUID"
+        ],
+        "type": "string"
+      },
+      "ValidFromMode": {
+        "enum": [
+          "Now",
+          "Today"
+        ],
+        "type": "string"
+      },
+      "WebhookCreateDto": {
+        "required": [
+          "events",
+          "lockerLocation",
+          "name",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "events": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "lockerLocation": {
+            "$ref": "#/components/schemas/WebhookLockerLocationFilterDto"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "lockerOpenedByMasterCardOnly": {
+            "type": "boolean"
+          },
+          "lockerLockedByMasterCardOnly": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WebhookCreatedDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WebhookDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "events": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "lockerLocation": {
+            "$ref": "#/components/schemas/WebhookLockerLocationFilterDto"
+          },
+          "lockerOpenedByMasterCardOnly": {
+            "type": "boolean"
+          },
+          "lockerLockedByMasterCardOnly": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "WebhookDtoPagedResult": {
+        "required": [
+          "results"
+        ],
+        "type": "object",
+        "properties": {
+          "results": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/WebhookDto"
+            },
+            "nullable": true
+          },
+          "totalRecords": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageNumber": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WebhookLockerLocationFilterDto": {
+        "type": "object",
+        "properties": {
+          "isAll": {
+            "type": "boolean"
+          },
+          "areaIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          },
+          "groupIds": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "format": "uuid"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "WebhookUpdateDto": {
+        "required": [
+          "events",
+          "lockerLocation",
+          "name",
+          "url"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "url": {
+            "type": "string",
+            "nullable": true
+          },
+          "events": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true
+          },
+          "lockerLocation": {
+            "$ref": "#/components/schemas/WebhookLockerLocationFilterDto"
+          },
+          "isActive": {
+            "type": "boolean"
+          },
+          "lockerOpenedByMasterCardOnly": {
+            "type": "boolean"
+          },
+          "lockerLockedByMasterCardOnly": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "securitySchemes": {
+      "Authorizations": {
+        "type": "apiKey",
+        "description": "API Key authentication using X-API-KEY header",
+        "name": "X-API-KEY",
+        "in": "header"
+      }
+    }
+  },
+  "security": [
+    {
+      "Authorizations": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Authorization Groups",
+      "description": "Authorization Groups represent collections of authorization rules that can be applied to multiple lockers or users at once. They simplify access control management by allowing you to define shared locker access rules, time plans, and limits for a group rather than individual authorizations.",
+      "x-page-title": "Authorization Groups",
+      "x-page-description": "Organize and manage grouped authorization policies."
+    },
+    {
+      "name": "Data Carrier Types",
+      "description": "Data Carrier Types define the configuration and format of credentials recognized by the system, such as UID formats, duration definitions, and hardware compatibility. This API provides control over supported card formats and activation states.",
+      "x-page-title": "Data Carrier Types",
+      "x-page-description": "Define and manage types of physical or digital access credentials."
+    },
+    {
+      "name": "Data Carriers",
+      "description": "The Data Carriers API manages the access credentials (RFID cards, BLE tokens, NFC tags) that belong to locker users. Each data carrier acts as a unique identifier and can have associated authorizations, validity dates, and status flags such as enabled or disabled. Use this API to register, update credentials linked to locker users.",
+      "x-page-title": "Data Carriers",
+      "x-page-description": "Manage physical and digital credentials assigned to locker users."
+    },
+    {
+      "name": "Duration Templates",
+      "description": " Duration Templates provide reusable definitions for time-based validity,  such as fixed dates, date ranges, or rolling time spans. These templates      are commonly used by data carrier types to standardize access durations.",
+      "x-page-title": "Duration Templates",
+      "x-page-description": "Define reusable time validity rules."
+    },
+    {
+      "name": "Locker Areas",
+      "description": "Locker Areas represent a hierarchical structure used to organize lockers      by logical grouping. Areas can contain child areas      and locker groups, making it easier to filter, manage, and assign lockers      in large installations.",
+      "x-page-title": "Locker Areas",
+      "x-page-description": "Organize lockers by logical areas."
+    },
+    {
+      "name": "Lockers",
+      "description": " The Lockers API provides operations to list, search, and manage lockers in the system. Administrators can check locker availability, view open/closed or maintenance states, and manage locker assignments to locker users or authorizations.",
+      "x-page-title": "Lockers",
+      "x-page-description": "Manage physical lockers, configurations, and access state."
+    },
+    {
+      "name": "Locker Users",
+      "description": "The Locker Users API manages individuals who are assigned lockers in the system. It supports creating and updating user records, linking them with authorization groups, and associating data carriers (RFID cards, tags, etc.) that are used for locker access.",
+      "x-page-title": "Locker Users",
+      "x-page-description": "Manage locker users and their associated lockers and data carriers."
+    },
+    {
+      "name": "Webhooks",
+      "description": "The Webhooks API allows external systems to receive notifications for key events such as locker activity, authorization updates, or data carrier changes. It enables real-time integrations and automation by sending event payloads to registered URLs.",
+      "x-page-title": "Webhooks",
+      "x-page-description": "Subscribe to locker, authorization, and user activity events."
+    }
+  ]
+}
