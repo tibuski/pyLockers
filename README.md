@@ -60,6 +60,19 @@ Existing users are matched by `memberNumber`, then `email`, then name, and
 matched by `cardUID` per user. (The API's bulk-upsert creates duplicates
 when no `id` is given — the tool resolves ids for you.)
 
+Rows are validated before calling the API (`SKIP ...` with a reason) and
+per-item API rejections are reported with the affected item and the API's
+message, e.g. `FAILED card 2198065733: Data carrier is not unique.`
+Note the bulk API returns HTTP 200 even for rejected items, so always
+check the output. The exit code is `1` if any row failed.
+
+### Large imports/exports
+
+Bulk calls are chunked (500 items per request) with progress output, and
+card matching skips users created during the import itself. Expect a few
+minutes for thousands of users with cards (one detail request per existing
+user is required by the API). Increase `RELAXX_TIMEOUT` if the API is slow.
+
 ## Library usage
 
 ```bash
@@ -93,3 +106,5 @@ uv run ruff format .  # format
 ```
 
 Secrets live only in `.env`, which is gitignored — never commit it.
+Exported CSV files (`*.csv`) are gitignored too, as they contain personal
+data.
