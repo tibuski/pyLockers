@@ -107,6 +107,13 @@ def _parse_bool(value: str | None, *, default: bool = True) -> bool:
     return value.strip().lower() in ("true", "1", "yes")
 
 
+def _err_msg(error: dict | None) -> str:
+    """Extract a readable message from an API error object."""
+    if isinstance(error, dict):
+        return str(error.get("message") or error)
+    return str(error)
+
+
 def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
     """Import locker users (and their data carriers) from a CSV file.
 
@@ -158,7 +165,7 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
     # falling back to the id of a matched existing user.
     row_user_ids: list[str | None] = []
     failures = 0
-    for payload, result in zip(user_payloads, results, strict=True):
+    for row, payload, result in zip(rows, user_payloads, results, strict=True):
         if result.success and result.data and result.data.get("id"):
             row_user_ids.append(result.data["id"])
         elif result.success and payload.get("id"):
@@ -166,7 +173,12 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
         else:
             row_user_ids.append(None)
             failures += 1
-            print(f"  FAILED user: {result.error}", file=sys.stderr)
+            name = f"{row.get('firstName')} {row.get('lastName')}".strip()
+            print(
+                f"  FAILED user {name or row.get('memberNumber')}: "
+                f"{_err_msg(result.error)}",
+                file=sys.stderr,
+            )
 
     # Data carriers: match by cardUID per user so re-imports update.
     carrier_payloads = []
@@ -210,10 +222,15 @@ def cmd_importusers(client: RelaxxClient, args: argparse.Namespace) -> int:
         carrier_payloads.append(carrier)
 
     if carrier_payloads:
-        for result in client.bulk_upsert_data_carriers(carrier_payloads):
+        results = client.bulk_upsert_data_carriers(carrier_payloads)
+        for carrier, result in zip(carrier_payloads, results, strict=True):
             if not result.success:
                 failures += 1
-                print(f"  FAILED card: {result.error}", file=sys.stderr)
+                print(
+                    f"  FAILED card {carrier['cardUID']}: "
+                    f"{_err_msg(result.error)}",
+                    file=sys.stderr,
+                )
 
     print(
         f"Imported {len(user_payloads)} user(s), {len(carrier_payloads)} card(s), "
